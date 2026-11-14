@@ -19,7 +19,7 @@ Official repository for the paper **ManifoldSplat: Language-Guided Semantic Shap
 
 The full code for ManifoldSplat **will be available soon**. We are currently cleaning up the repository and preparing the release.
 
-**If you need the code sooner**—for instance, to run comparisons for an upcoming submission—please feel free to open an **Issue** in this repository. Knowing there is active demand will help us prioritize and expedite the release process!
+**If you need the code sooner**—for instance, to run comparisons for an upcoming submission—please feel free to [**open an Issue**](https://github.com/a-canela/manifoldsplat/issues/new) in this repository. Knowing there is active demand will help us prioritize and expedite the release process!
 
 ## 📖 Citation
 
