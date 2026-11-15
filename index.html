@@ -1,84 +1,631 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            padding: 40px 20px;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            margin: 20px;
-        }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1.25;
-            color: #111111;
-            margin-bottom: 10px;
-        }
-        .conference {
-            font-size: 1.15rem;
-            color: #0066cc;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 30px;
-        }
-        .divider {
-            height: 2px;
-            width: 60px;
-            background-color: #0066cc;
-            margin: 0 auto 30px auto;
-        }
-        .status-badge {
-            display: inline-block;
-            background-color: #e6f2ff;
-            color: #0056b3;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            border: 1px solid #b3d7ff;
-            margin-top: 10px;
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 0.85rem;
-            color: #6c757d;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars</title>
+  <meta name="description" content="ManifoldSplat (GCPR 2026) is the first end-to-end framework for language-guided semantic shape editing of animatable 3D Gaussian Splatting head avatars reconstructed from monocular video. Edits live on the FLAME manifold, preserving identity and animation.">
+  <meta name="keywords" content="ManifoldSplat, DeltaRegion, 3D Gaussian Splatting, head avatars, FLAME, text-driven shape editing, GCPR 2026">
+  <meta name="author" content="Antonio Canela, Jordi Sànchez-Riera">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="canonical" href="https://a-canela.github.io/manifoldsplat/">
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars">
+  <meta property="og:description" content="Edit the facial geometry of animatable 3D Gaussian head avatars with free-form text, while preserving identity, photorealism and animation. GCPR 2026.">
+  <meta property="og:url" content="https://a-canela.github.io/manifoldsplat/">
+  <meta property="og:image" content="https://a-canela.github.io/manifoldsplat/static/images/social_card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ManifoldSplat (GCPR 2026)">
+  <meta name="twitter:description" content="Language-guided semantic shape editing of 3D Gaussian head avatars.">
+  <meta name="twitter:image" content="https://a-canela.github.io/manifoldsplat/static/images/social_card.jpg">
+
+  <!-- Google Scholar -->
+  <meta name="citation_title" content="ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars">
+  <meta name="citation_author" content="Canela, Antonio">
+  <meta name="citation_author" content="Sanchez-Riera, Jordi">
+  <meta name="citation_conference_title" content="DAGM German Conference on Pattern Recognition (GCPR)">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_arxiv_id" content="2610.03599">
+
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400;1,8..60,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
+
 <body>
+<a class="skip-link" href="#overview">Skip to content</a>
 
-<div class="container">
-    <h1>ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars</h1>
-    <div class="conference">GCPR 2026</div>
-    <div class="divider"></div>
-    
-    <p style="font-size: 1.2rem; color: #495057; margin-bottom: 25px;">
-        Official project page and source code repository.
-    </p>
-    
-    <div class="status-badge">
-        🚀 Code and Project Page Coming Soon!
+<!-- ============================== HERO ============================== -->
+<header class="hero" id="top">
+  <div class="hero-splats" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="wrap">
+    <h1 class="masthead">Manifold<span class="grad-text">Splat</span></h1>
+    <p class="paper-title">Language-Guided Semantic Shape Editing of 3D&nbsp;Gaussian Head Avatars</p>
+
+    <div class="authors">
+      <span><a href="https://orcid.org/0009-0002-1943-5170" target="_blank" rel="noopener">Antonio Canela</a><sup>1,2</sup></span>
+      <span><a href="https://orcid.org/0000-0002-4803-5742" target="_blank" rel="noopener">Jordi Sànchez-Riera</a><sup>2</sup></span>
     </div>
-</div>
+    <div class="affiliations">
+      <span><sup>1</sup>Universitat Politècnica de Catalunya (UPC)</span>
+      <span><sup>2</sup>Institut de Robòtica i Informàtica Industrial, CSIC-UPC</span>
+    </div>
 
+    <div class="aff-logos">
+      <a href="https://www.upc.edu/" target="_blank" rel="noopener" title="Universitat Politècnica de Catalunya"><img class="logo-upc" src="static/images/upc.png" alt="Universitat Politècnica de Catalunya (UPC)"></a>
+      <a href="https://www.iri.upc.edu/" target="_blank" rel="noopener" title="Institut de Robòtica i Informàtica Industrial"><img src="static/images/iri.png" alt="Institut de Robòtica i Informàtica Industrial (IRI)"></a>
+      <a href="https://www.csic.es/" target="_blank" rel="noopener" title="Consejo Superior de Investigaciones Científicas"><img src="static/images/csic.svg" alt="Consejo Superior de Investigaciones Científicas (CSIC)"></a>
+    </div>
+
+    <p class="conference">Accepted at the <strong>DAGM German Conference on Pattern Recognition (GCPR 2026)</strong></p>
+
+    <nav class="link-buttons" aria-label="Paper resources">
+      <a class="btn" href="https://arxiv.org/abs/2610.03599" target="_blank" rel="noopener">
+        <span class="icon"><i class="ai ai-arxiv" aria-hidden="true"></i></span><span>arXiv</span>
+      </a>
+      <a class="btn" href="https://github.com/a-canela/manifoldsplat" target="_blank" rel="noopener" title="Code repository (release coming soon)">
+        <span class="icon"><svg viewBox="0 0 496 512" aria-hidden="true"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg></span>
+        <span>Code</span><span class="tag">Soon</span>
+      </a>
+      <a class="btn" href="https://huggingface.co/a-canela/DeltaRegion" target="_blank" rel="noopener" title="DeltaRegion model on Hugging Face">
+        <span class="icon" aria-hidden="true">🤗</span><span>Model</span>
+      </a>
+      <a class="btn" href="https://zenodo.org/records/24223049" target="_blank" rel="noopener" title="DeltaRegion training dataset on Zenodo">
+        <span class="icon"><i class="ai ai-zenodo" aria-hidden="true"></i></span><span>Dataset</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================== SECTION NAV ============================== -->
+<nav class="section-nav" aria-label="Sections">
+  <div class="wrap">
+    <a class="nav-brand" href="#top">Manifold<span class="grad-text">Splat</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="#overview">Overview</a>
+      <a class="nav-link" href="#results">Results</a>
+      <a class="nav-link" href="#dataset">Dataset</a>
+      <a class="nav-link" href="#code">Code</a>
+      <a class="nav-link" href="#acknowledgments">Acknowledgments</a>
+      <a class="nav-link" href="#citation">Cite</a>
+    </div>
+    <span class="nav-spacer" aria-hidden="true"></span>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================== OVERVIEW ============================== -->
+<section class="section" id="overview">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">01 — Overview</p>
+      <h2>Sculpt an animatable avatar with words.</h2>
+      <p class="lead">From a short monocular video and a free-form prompt such as <em>“make her nose very narrow”</em>, ManifoldSplat returns an animatable 3D Gaussian head avatar of the <em>same person</em> with the requested, localized change, in about a minute and a half on a consumer GPU.</p>
+    </div>
+
+
+    <figure class="figure reveal">
+      <a href="static/images/teaser.jpg" target="_blank" rel="noopener" aria-label="Open the teaser figure at full resolution">
+        <img src="static/images/teaser.jpg" width="2434" height="942" alt="Teaser: (a) an unedited avatar and three text-driven edits, (b) 'make face bigger', (c) 'adjust lips to be very big' and (d) 'big nose', each shown under several expressions.">
+      </a>
+      <figcaption><strong>Text-driven editing of animatable head avatars.</strong> ManifoldSplat produces localized, semantically meaningful shape changes through natural-language prompts while preserving identity, photorealism and animatability. (a) Unedited avatar; (b) <em>“make face bigger”</em>; (c) <em>“adjust lips to be very big”</em>; (d) <em>“big nose”</em>.</figcaption>
+    </figure>
+
+    <div class="abstract-grid">
+      <div class="abstract reveal">
+        <h3>Abstract</h3>
+        <p>High-fidelity 3D head avatars have reached near-photorealistic quality. While recent methods enable text-driven manipulation, they struggle to provide fine-grained localized control, often entangling features or lacking geometric consistency. Modifying geometry through natural language currently requires slow per-prompt optimization or compromises identity and rigging.</p>
+        <p>We present <strong>ManifoldSplat</strong>, the first end-to-end framework for language-guided semantic shape editing of animatable 3D Gaussian Splatting avatars reconstructed from monocular videos. By performing edits within the structured FLAME manifold rather than directly optimizing an unstructured Gaussian cloud, we strictly preserve identity and animation. We introduce <strong>DeltaRegion</strong>, a per-region disentangled Conditional Variational Autoencoder (CVAE) delivering feed-forward shape deltas, alongside a refining stage to recover view-consistent details. ManifoldSplat reconstructs and edits an avatar in ~90 seconds on a consumer GPU, rendering at ~800 FPS. Extensive evaluations demonstrate our approach sets a new state-of-the-art in localized prompt alignment, geometric coherence, and identity preservation.</p>
+      </div>
+      <aside class="contrib-card reveal" aria-labelledby="contrib-title">
+        <h3 id="contrib-title">Contributions</h3>
+        <ol class="contrib-list">
+          <li><span class="num">1</span><strong>ManifoldSplat</strong>: an end-to-end <a href="https://github.com/a-canela/manifoldsplat" target="_blank" rel="noopener">pipeline</a> achieving state-of-the-art language-guided semantic shape editing of animatable 3D Gaussian head avatars reconstructed from monocular video, with targeted rendering enhancements that address the characteristic geometric artifacts.</li>
+          <li><span class="num">2</span><strong>DeltaRegion</strong>: a text-guided shape-editing <a href="https://huggingface.co/a-canela/DeltaRegion" target="_blank" rel="noopener">model</a> that, given a free-form prompt and a source FLAME identity, yields a localized shape delta in a single feed-forward pass.</li>
+          <li><span class="num">3</span><strong>A synthetic dataset</strong> of per-region vertex-displacement edits defined on the FLAME topology, <a href="#dataset">publicly released</a>.</li>
+        </ol>
+      </aside>
+    </div>
+
+    <div class="subsection" id="method">
+      <div class="subsection-head reveal">
+        <h3>Method</h3>
+        <p>Edits are performed inside FLAME’s identity space, a structured manifold of plausible head geometry, rather than on the unstructured Gaussian cloud. Changing only the identity coefficients <span class="math">β</span> changes <em>who</em> the subject is without altering <em>how</em> they move.</p>
+      </div>
+      <div class="method-grid">
+        <figure class="figure reveal">
+          <a href="static/images/method.png" target="_blank" rel="noopener" aria-label="Open the method diagram at full resolution">
+            <img src="static/images/method.png" width="3178" height="2375" loading="lazy" alt="Overview of ManifoldSplat. Top: inputs and preprocessing, then (1) shape editing with DeltaRegion and (2) Gaussian refining with topological mapping and image warping, producing rendered frames. Bottom: the DeltaRegion conditional VAE with shape encoder, Flan-T5-Large text encoder, cross-attention, prior and posterior networks, gate network and delta decoder.">
+          </a>
+          <figcaption><strong>Overview of ManifoldSplat.</strong> <em>Top:</em> the pipeline turns a monocular video and a prompt into an animatable edited avatar via a frozen DeltaRegion edit followed by Gaussian training and warped refining. <em>Bottom:</em> DeltaRegion, our text-conditioned shape-editing CVAE; the region gate zeroes out non-selected latent blocks before decoding. <span class="zoom-hint">Click to enlarge.</span></figcaption>
+        </figure>
+
+        <div class="stage-list">
+          <article class="stage s0 reveal">
+            <span class="stage-tag">Backbone</span>
+            <h4>Mesh-bound Gaussian avatar</h4>
+            <p>Following RGBAvatar, each Gaussian is anchored to a FLAME triangle and expressed in its tangent–bitangent–normal frame, with learned blendshape offsets driven by the tracked expressions. Any change of the mesh, including a new identity <span class="math">β</span>, propagates to the Gaussians without full re-optimization.</p>
+          </article>
+          <article class="stage reveal">
+            <span class="stage-tag">Stage 1 · Shape editing</span>
+            <h4>DeltaRegion</h4>
+            <p>A conditional VAE fuses a frozen Flan-T5-Large prompt encoding with an MLP embedding of the source shape <span class="math">β<sub>0</sub></span> via cross-attention. Its latent is split into one block per facial region (face, nose, lips, ears, neck, eyes); a gate predicted from the prompt alone zeroes out the blocks of non-named regions, so the decoded <span class="math">Δβ ∈ ℝ<sup>300</sup></span> stays local <em>by construction</em>.</p>
+            <p>At inference the posterior is dropped and the scaled prior mean is decoded: one deterministic feed-forward pass, with edit strength controlled by qualifiers (<em>“slightly”</em>, <em>“very”</em>) or by a continuous prior-scale knob.</p>
+          </article>
+          <article class="stage s2 reveal">
+            <span class="stage-tag">Stage 2 · Gaussian refining</span>
+            <h4>Targeted fixes for edited geometry</h4>
+            <ul>
+              <li><strong>(a) Surface consistency:</strong> an L2 penalty on TBN-local positions and blendshape offsets keeps splats on the mesh surface, so they follow it when the shape changes.</li>
+              <li><strong>(b) Smooth color activation:</strong> the sigmoid-like SH-to-color mapping is replaced by <span class="math">½(tanh(v)+1)</span> inside the CUDA rasterizer, avoiding harsh color transitions at zero cost.</li>
+              <li><strong>(c) Warped refining:</strong> the shared FLAME topology gives a closed-form per-pixel warp from the original to the edited mesh, producing view-consistent pseudo-ground-truth; a short re-optimization (~30 s) with frozen colors and an anchor loss realigns appearance cues to the new geometry.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== RESULTS ============================== -->
+<section class="section alt" id="results">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">02 — Results</p>
+      <h2>Localized edits that keep the person, and the performance.</h2>
+      <p class="lead">Compare each unedited avatar with its edited counterpart. Both are driven by the same pose and expression sequence, so the edited avatar stays fully animatable.</p>
+    </div>
+
+    <!-- Qualitative: interactive video comparison -->
+    <div class="subsection" style="margin-top:0" id="qualitative">
+      <div class="subsection-head reveal">
+        <h3>Qualitative results</h3>
+      </div>
+      <div class="viewer-grid">
+        <div class="controls reveal">
+          <div>
+            <p class="control-label" id="identity-label">Identity</p>
+            <div class="identity-picker" role="group" aria-labelledby="identity-label">
+              <button type="button" class="identity-btn" data-identity="malte" aria-pressed="true"><img src="static/images/identities/malte.jpg" alt="" width="256" height="256"><span class="name">Malte</span></button>
+              <button type="button" class="identity-btn" data-identity="bala" aria-pressed="false"><img src="static/images/identities/bala.jpg" alt="" width="256" height="256"><span class="name">Bala</span></button>
+              <button type="button" class="identity-btn" data-identity="obama" aria-pressed="false"><img src="static/images/identities/obama.jpg" alt="" width="256" height="256"><span class="name">Obama</span></button>
+              <button type="button" class="identity-btn" data-identity="justin" aria-pressed="false"><img src="static/images/identities/justin.jpg" alt="" width="256" height="256"><span class="name">Justin</span></button>
+            </div>
+          </div>
+          <div>
+            <p class="control-label" id="prompt-label">Edit prompt</p>
+            <div class="prompt-picker" role="group" aria-labelledby="prompt-label">
+              <button type="button" class="prompt-btn" data-edit="bigger lips" aria-pressed="true"><span class="region">lips</span><span class="q">“bigger lips”</span></button>
+              <button type="button" class="prompt-btn" data-edit="close-set eyes" aria-pressed="false"><span class="region">eyes</span><span class="q">“close-set eyes”</span></button>
+              <button type="button" class="prompt-btn" data-edit="hawk-like nose" aria-pressed="false"><span class="region">nose</span><span class="q">“hawk-like nose”</span></button>
+              <button type="button" class="prompt-btn" data-edit="large face" aria-pressed="false"><span class="region">face</span><span class="q">“large face”</span></button>
+            </div>
+          </div>
+          <p class="viewer-note"><strong>Drag</strong> across the video to move the divider: the <strong>left</strong> side shows the unedited avatar, the <strong>right</strong> side the edited one. With the viewer focused, use <kbd>←</kbd> <kbd>→</kbd> to move the divider and <kbd>Space</kbd> to play or pause.</p>
+        </div>
+
+        <div class="viewer-col reveal">
+          <div class="compare" id="compare" tabindex="0" role="slider" aria-label="Before/after divider position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+            <video class="video-a" muted playsinline loop preload="none" poster="static/videos/malte/unedited/poster.jpg" aria-label="Unedited avatar"></video>
+            <video class="video-b" muted playsinline loop preload="none" poster="static/videos/malte/bigger%20lips/poster.jpg" aria-label="Edited avatar"></video>
+            <span class="compare-label left">Unedited</span>
+            <span class="compare-label right">“bigger lips”</span>
+            <div class="compare-handle" aria-hidden="true">
+              <span class="compare-knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span>
+            </div>
+            <span class="compare-spinner" aria-hidden="true"></span>
+            <div class="compare-progress" aria-hidden="true"><span></span></div>
+          </div>
+          <div class="viewer-toolbar">
+            <button type="button" class="icon-btn" id="play-toggle" aria-label="Pause videos">
+              <svg class="ico-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              <svg class="ico-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M7 5v14l12-7z"/></svg>
+              <span class="txt">Pause</span>
+            </button>
+            <button type="button" class="icon-btn" id="restart" aria-label="Restart videos">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Restart</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection reveal" style="margin-top:clamp(40px,6vw,72px)">
+        <div class="tabs" role="tablist" aria-label="Comparison figures">
+          <button type="button" class="tab" role="tab" id="fig-tab-avatar" aria-selected="true" aria-controls="fig-avatar">Full-avatar editing vs. baselines</button>
+          <button type="button" class="tab" role="tab" id="fig-tab-shape" aria-selected="false" aria-controls="fig-shape" tabindex="-1">Shape editing vs. baselines</button>
+          <button type="button" class="tab" role="tab" id="fig-tab-fine" aria-selected="false" aria-controls="fig-fine" tabindex="-1">Fine-grained local edits</button>
+        </div>
+        <div class="tab-panel" id="fig-avatar" role="tabpanel" aria-labelledby="fig-tab-avatar">
+          <figure class="figure">
+            <a href="static/images/comparison_fullmethod.jpg" target="_blank" rel="noopener" aria-label="Open the full-avatar comparison at full resolution">
+              <img src="static/images/comparison_fullmethod.jpg" width="2286" height="1195" loading="lazy" alt="Two edits, 'small lips' and 'long chin', on NeRSemble subjects: (a) input frame, (b) InstructPix2Pix, (c) GaussianAvatar-Editor, (d) ours.">
+            </a>
+            <figcaption><strong>Full-avatar editing comparison</strong> on NeRSemble against InstructPix2Pix and GaussianAvatar-Editor, for <em>“small lips”</em> and <em>“long chin”</em>. InstructPix2Pix produces 2D artifacts and identity drift; GaussianAvatar-Editor preserves structure but barely realizes the requested geometric change; ManifoldSplat delivers a localized edit while preserving identity and surrounding appearance.</figcaption>
+          </figure>
+        </div>
+        <div class="tab-panel" id="fig-shape" role="tabpanel" aria-labelledby="fig-tab-shape" hidden>
+          <figure class="figure">
+            <a href="static/images/comparison_describe3d_semantify.jpg" target="_blank" rel="noopener" aria-label="Open the shape-editing comparison at full resolution">
+              <img src="static/images/comparison_describe3d_semantify.jpg" width="3563" height="1174" loading="lazy" alt="Two ear edits on a neutral FLAME identity, color-coded by per-vertex displacement: (1) DESCRIBE3D, (2) Semantify, (3) DeltaRegion (ours).">
+            </a>
+            <figcaption><strong>Shape editing comparison.</strong> Meshes are color-coded by per-vertex displacement from the neutral identity for two ear edits. DESCRIBE3D spreads displacement over face and neck, Semantify drags the bust and face along, and only DeltaRegion (ours) concentrates the deformation on the named region.</figcaption>
+          </figure>
+        </div>
+        <div class="tab-panel" id="fig-fine" role="tabpanel" aria-labelledby="fig-tab-fine" hidden>
+          <figure class="figure">
+            <a href="static/images/results_qualitative.jpg" target="_blank" rel="noopener" aria-label="Open the fine-grained edits figure at full resolution">
+              <img src="static/images/results_qualitative.jpg" width="2063" height="1504" loading="lazy" alt="Three subjects with nose edits: (a) unedited, (b) long nose, (c) upturned tip nose, (d) deviated nose base left, with normal-coded FLAME insets.">
+            </a>
+            <figcaption><strong>Fine-grained local edits.</strong> Three subjects and three nose-region prompts, ranging from a global elongation (<em>“long nose”</em>) to localized tweaks of the tip (<em>“upturned tip nose”</em>) and base (<em>“deviated nose base left”</em>). The normal-coded FLAME insets confirm the change is confined to the named region while hair, eyes, mouth and skin remain untouched.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quantitative -->
+    <div class="subsection" id="quantitative">
+      <div class="subsection-head reveal">
+        <h3>Quantitative results</h3>
+        <p><strong>Full-avatar editing comparison</strong> (Table 1 of the paper) on the pre-processed NeRSemble subset released by GaussianAvatar-Editor: 18 natural-language edits per subject covering all six regions, with each subject’s front camera held out for evaluation.</p>
+      </div>
+      <div class="reveal">
+        <div class="tabs" role="tablist" aria-label="Quantitative results view">
+          <button type="button" class="tab" role="tab" id="q-tab-chart" aria-selected="true" aria-controls="q-chart">Charts</button>
+          <button type="button" class="tab" role="tab" id="q-tab-table" aria-selected="false" aria-controls="q-table" tabindex="-1">Table</button>
+        </div>
+        <div class="tab-panel" id="q-chart" role="tabpanel" aria-labelledby="q-tab-chart">
+          <div class="metric-families" id="metric-families"></div>
+        </div>
+        <div class="tab-panel" id="q-table" role="tabpanel" aria-labelledby="q-tab-table" hidden>
+          <div class="table-wrap">
+            <table class="data">
+              <thead>
+                <tr><th scope="col">Method</th><th scope="col">CLIP-D ↑</th><th scope="col">ArcFace ↑</th><th scope="col">TV<sub>2D</sub> ↓</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>InstructPix2Pix</td><td>0.0432</td><td>0.5212</td><td>0.0210</td></tr>
+                <tr><td>GaussianAvatar-Editor</td><td>0.0467</td><td>0.7600</td><td>0.0126</td></tr>
+                <tr class="ours"><td>ManifoldSplat (Ours)</td><td>0.0490</td><td>0.9319</td><td>0.0122</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="chart-note"><strong>CLIP-D</strong> measures prompt alignment, <strong>ArcFace</strong> identity preservation, and the anisotropic 2D total variation <strong>TV<sub>2D</sub></strong> serves as a no-reference image-quality proxy. ManifoldSplat tops every metric: since every edit is constrained to FLAME’s 300-D identity subspace, the edited identity is valid by construction (highest ArcFace), and because edits never pass through a per-frame 2D denoiser, they avoid the high-frequency residue of diffusion-based editors (lowest TV<sub>2D</sub>).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== DATASET ============================== -->
+<section class="section" id="dataset">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">03 — Dataset</p>
+      <h2>ManifoldSplat Dataset: per-region FLAME shape edits.</h2>
+      <p class="lead">The synthetic corpus used to train DeltaRegion: <strong>580,500 supervised triplets</strong> <span class="math">(β<sub>0</sub>, t, β<sub>1</sub>)</span>, each pairing a source FLAME identity <span class="math">β<sub>0</sub></span> and a natural-language edit prompt <span class="math">t</span> with the target identity <span class="math">β<sub>1</sub> = β<sub>0</sub> + Δβ</span> that realizes the edit, localized to one of six facial regions.</p>
+    </div>
+
+    <div class="ds-grid">
+      <div class="prose reveal">
+        <h3>What is inside</h3>
+        <p>No public corpus pairs free-form prompts with identity-preserving FLAME shape deltas, so we built one. Each edit is authored once as a <strong>prototype</strong>: a sparse set of FLAME vertices in the target region, each with a 3D displacement vector, plus a canonical prompt fragment (e.g. <em>“hawk-like”</em>). Because all FLAME identities share the same topology, each prototype can be projected onto any source identity, turning a small library of prototypes into a combinatorially large supervised set.</p>
+        <div class="fact-row">
+          <div class="fact"><b>300</b><span>source identities (MICA fits of LYHM subjects)</span></div>
+          <div class="fact"><b>129</b><span>edit prototypes over 6 regions</span></div>
+          <div class="fact"><b>3</b><span>edit magnitudes: 0.5×, 1.0×, 1.5×</span></div>
+          <div class="fact"><b>5</b><span>prompt variants per (edit, magnitude)</span></div>
+        </div>
+        <p><span class="math">300 × 129 × 3 × 5 = 580,500</span> rows. For every (subject, edit, scale) tuple, <span class="math">Δβ</span> is the FLAME 2020 shape-coefficient change whose induced vertex motion best matches the (scaled) prototype displacements on that subject’s mesh. It is obtained by iterative optimization (Adam, 1,500 steps, lr 10<sup>−2</sup>, ℓ<sub>2</sub> weight 10<sup>−6</sup>, warm-started from the analytical least-squares solution) with an outside-region penalty (weight 10<sup>2</sup>) that prevents the deformation from leaking into unrelated areas.</p>
+
+        <div class="table-wrap" style="margin-top:22px">
+          <table class="data">
+            <thead><tr><th scope="col">Region file</th><th scope="col">Edit prototypes</th><th scope="col">Rows (N)</th><th scope="col">Size</th></tr></thead>
+            <tbody>
+              <tr><td><code>ears/ears_edit_data.pth</code></td><td>14</td><td>63,000</td><td>152.5 MB</td></tr>
+              <tr><td><code>eyes/eyes_edit_data.pth</code></td><td>15</td><td>67,500</td><td>163.4 MB</td></tr>
+              <tr><td><code>face/face_edit_data.pth</code></td><td>25</td><td>112,500</td><td>272.4 MB</td></tr>
+              <tr><td><code>lips/lips_edit_data.pth</code></td><td>26</td><td>117,000</td><td>283.3 MB</td></tr>
+              <tr><td><code>neck/neck_edit_data.pth</code></td><td>6</td><td>27,000</td><td>65.4 MB</td></tr>
+              <tr><td><code>nose/nose_edit_data.pth</code></td><td>43</td><td>193,500</td><td>468.5 MB</td></tr>
+            </tbody>
+            <tfoot><tr><td>Total</td><td>129</td><td>580,500</td><td>1.41 GB</td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="side-stack">
+        <div class="download-card reveal">
+          <h3>Download</h3>
+          <div class="meta">
+            <a class="doi-badge" href="https://doi.org/10.5281/zenodo.24223049" target="_blank" rel="noopener"><span>DOI</span><span>10.5281/zenodo.24223049</span></a>
+            <span>License: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+            <span>v1.0.0</span>
+          </div>
+          <div class="actions">
+            <a class="btn" href="https://zenodo.org/records/24223049/files/ManifoldSplat_Dataset.tar.xz?download=1"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span>ManifoldSplat_Dataset.tar.xz</span><span class="tag light">140.2 MB</span></a>
+            <a class="btn ghost" href="https://zenodo.org/records/24223049" target="_blank" rel="noopener"><span class="icon"><i class="ai ai-zenodo" aria-hidden="true"></i></span><span>Zenodo record</span></a>
+          </div>
+          <div class="meta" style="margin-bottom:0">
+            <span>MD5 <code>bb0facf287274fc8b741a1a3609584dc</code></span>
+            <span>SHA-256 <code>02f8ca690d6fe444ed55a9c484422959c1953638371ab50c301e0f0c7871e429</code></span>
+          </div>
+        </div>
+
+        <div class="code-block reveal">
+          <div class="code-title"><span>shell</span><button type="button" class="copy-btn" data-copy="#code-download">Copy</button></div>
+<pre id="code-download"><span class="c"># Download, verify and extract (≈1.41 GB once extracted)</span>
+wget -O ManifoldSplat_Dataset.tar.xz <span class="s">"https://zenodo.org/records/24223049/files/ManifoldSplat_Dataset.tar.xz?download=1"</span>
+wget -O ManifoldSplat_Dataset.tar.xz.sha256 <span class="s">"https://zenodo.org/records/24223049/files/ManifoldSplat_Dataset.tar.xz.sha256?download=1"</span>
+sha256sum -c ManifoldSplat_Dataset.tar.xz.sha256
+tar -xJf ManifoldSplat_Dataset.tar.xz</pre>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- File format -->
+    <div class="subsection" id="dataset-format">
+      <div class="subsection-head reveal">
+        <h3>File format</h3>
+        <p>Each <code>*_edit_data.pth</code> is a <code>torch.save</code>d Python <code>dict</code> of flat, row-aligned fields (row <code>i</code> of every field describes the same triplet). It contains only tensors, strings, numbers, lists and dicts, so it loads with the safe <code>torch.load(..., weights_only=True)</code>.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="data left">
+          <thead><tr><th scope="col">Key</th><th scope="col">Type · shape</th><th scope="col">Content</th></tr></thead>
+          <tbody>
+            <tr><td><code>source_shapes</code></td><td><code>torch.float32</code> · <code>(N, 300)</code></td><td>Source identity <span class="math">β<sub>0</sub></span>: FLAME 2020 shape coefficients of the subject before editing.</td></tr>
+            <tr><td><code>target_shapes</code></td><td><code>torch.float32</code> · <code>(N, 300)</code></td><td>Edited identity <span class="math">β<sub>1</sub> = β<sub>0</sub> + Δβ</span>. The edit itself is <code>target_shapes - source_shapes</code>.</td></tr>
+            <tr><td><code>attributes</code></td><td><code>list[str]</code> · <code>N</code></td><td>Facial region of the edit: one of <code>face</code>, <code>nose</code>, <code>lips</code>, <code>ears</code>, <code>neck</code>, <code>eyes</code> (constant within a file; the gate label used to train DeltaRegion).</td></tr>
+            <tr><td><code>edit_names</code></td><td><code>list[str]</code> · <code>N</code></td><td>Prototype identifier, e.g. <code>hawk</code>, <code>close_set</code>, <code>thick_both</code>, <code>chin_cleft</code> (see the full list below).</td></tr>
+            <tr><td><code>scales</code></td><td><code>list[float]</code> · <code>N</code></td><td>Edit magnitude applied to the prototype displacements: <code>0.5</code>, <code>1.0</code> or <code>1.5</code>.</td></tr>
+            <tr><td><code>source_subjects</code></td><td><code>list[str]</code> · <code>N</code></td><td>Identifier of the source subject (LYHM scan ID, e.g. <code>130925160744</code>).</td></tr>
+            <tr><td><code>edit_prompts</code></td><td><code>list[str]</code> · <code>N</code></td><td>Natural-language prompt for the row, e.g. <em>“make the nose much more hawk-like”</em>.</td></tr>
+            <tr><td><code>metadata</code></td><td><code>dict</code></td><td><code>num_entries</code>, <code>num_subjects</code> (300), <code>num_edits</code>, <code>num_scales</code> (3), <code>num_prompt_variants</code> (5), <code>attribute_name</code>, <code>scales</code> (<code>[0.5, 1.0, 1.5]</code>), <code>edit_names</code> (ordered list of the file’s prototypes), <code>reg_weight</code> (<code>1e-06</code>) and <code>method</code> (<code>"iterative"</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="split-2" style="margin-top:clamp(28px,4vw,44px)">
+        <div class="prose reveal">
+          <h4>Row ordering</h4>
+          <p>Rows are laid out as <strong>edit → scale → subject → prompt variant</strong>, so row <code>i</code> of a file is</p>
+          <p><code>i = ((e · 3 + s) · 300 + j) · 5 + v</code></p>
+          <ul>
+            <li><code>e</code>: index of the edit in <code>metadata["edit_names"]</code>;</li>
+            <li><code>s</code>: index of the scale in <code>metadata["scales"]</code>;</li>
+            <li><code>j</code>: subject index; the 300 subjects, their order and their <span class="math">β<sub>0</sub></span> are identical in all six files;</li>
+            <li><code>v</code>: prompt variant (0–4). The five prompts of an (edit, scale) pair are shared by all 300 subjects.</li>
+          </ul>
+          <h4>Prompts</h4>
+          <p>Prompts are deterministic templates around the prototype’s canonical fragment, with a magnitude qualifier drawn at random per (edit, scale): <em>subtly, slightly, a little, a bit, somewhat</em> for 0.5×; no qualifier for 1.0×; <em>very, significantly, much more</em> for 1.5×. Variant <code>v</code> uses the <code>v</code>-th template of the edit’s family (basic, archetype, asymmetric or custom), e.g. for basic edits:</p>
+          <ul>
+            <li><em>make the {region} {qualifier} {edit}</em></li>
+            <li><em>{qualifier} {edit} {region}</em></li>
+            <li><em>give the {region} a {qualifier} {edit} shape</em></li>
+            <li><em>adjust the {region} to be {qualifier} {edit}</em></li>
+            <li><em>change the {region} to be {qualifier} {edit}</em></li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <h4>Example rows from <code>nose_edit_data.pth</code></h4>
+          <div class="table-wrap">
+            <table class="data">
+              <thead><tr><th scope="col">Row</th><th scope="col">edit_names</th><th scope="col">scales</th><th scope="col">source_subjects</th><th scope="col" style="text-align:left">edit_prompts</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td><code>small</code></td><td>0.5</td><td>130925160744</td><td style="text-align:left"><em>make the nose subtly small</em></td></tr>
+                <tr><td>1</td><td><code>small</code></td><td>0.5</td><td>130925160744</td><td style="text-align:left"><em>subtly small nose</em></td></tr>
+                <tr><td>5</td><td><code>small</code></td><td>0.5</td><td>130926112610</td><td style="text-align:left"><em>make the nose subtly small</em></td></tr>
+                <tr><td>1,500</td><td><code>small</code></td><td>1.0</td><td>130925160744</td><td style="text-align:left"><em>make the nose small</em></td></tr>
+                <tr><td>4,499</td><td><code>small</code></td><td>1.5</td><td>131218100933</td><td style="text-align:left"><em>change the nose to be much more small</em></td></tr>
+                <tr><td>142,500</td><td><code>hawk</code></td><td>1.5</td><td>130925160744</td><td style="text-align:left"><em>make the nose much more hawk-like</em></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage -->
+    <div class="subsection" id="dataset-usage">
+      <div class="subsection-head reveal">
+        <h3>How to use it</h3>
+        <p>Load a region file, slice it by prototype and magnitude, or merge all six regions into a single PyTorch dataset of (prompt, <span class="math">β<sub>0</sub></span>, <span class="math">β<sub>1</sub></span>, region) samples, exactly the supervision used to train DeltaRegion.</p>
+      </div>
+      <div class="callout reveal">
+        <span class="ico" aria-hidden="true">ℹ️</span>
+        <div>
+          <strong style="color:inherit">Only FLAME coefficients are distributed</strong> (no scans, images or meshes). To turn <span class="math">β</span> into meshes, feed the 300 coefficients to a FLAME 2020 layer; the model files require registration at <a href="https://flame.is.tue.mpg.de/" target="_blank" rel="noopener">flame.is.tue.mpg.de</a> and their use is subject to the FLAME license. Source identities are MICA fits of the Liverpool-York Head Model (LYHM). Expression, pose, eyelids and texture are never modified. When using the dataset, please cite ManifoldSplat as well as FLAME, MICA and LYHM.
+        </div>
+      </div>
+
+      <div class="code-block reveal" style="margin-top:18px">
+          <div class="code-title"><span>quickstart.py</span><button type="button" class="copy-btn" data-copy="#code-quickstart">Copy</button></div>
+<pre id="code-quickstart">import torch
+from torch.utils.data import Dataset, ConcatDataset
+
+ROOT = <span class="s">"ManifoldSplat_Dataset"</span>
+REGIONS = [<span class="s">"face"</span>, <span class="s">"nose"</span>, <span class="s">"lips"</span>, <span class="s">"ears"</span>, <span class="s">"neck"</span>, <span class="s">"eyes"</span>]  <span class="c"># DeltaRegion gate order</span>
+
+<span class="c"># 1) Load one region (plain tensors / lists / dicts -> safe with weights_only=True)</span>
+data = torch.load(f<span class="s">"{ROOT}/nose/nose_edit_data.pth"</span>, map_location=<span class="s">"cpu"</span>, weights_only=True)
+meta = data[<span class="s">"metadata"</span>]
+print(meta[<span class="s">"num_entries"</span>], meta[<span class="s">"num_subjects"</span>], meta[<span class="s">"num_edits"</span>], meta[<span class="s">"scales"</span>])
+<span class="c"># 193500 300 43 [0.5, 1.0, 1.5]</span>
+
+src = data[<span class="s">"source_shapes"</span>]          <span class="c"># (N, 300) float32, FLAME 2020 identity betas (beta_0)</span>
+tgt = data[<span class="s">"target_shapes"</span>]          <span class="c"># (N, 300) float32, edited betas (beta_1)</span>
+delta = tgt - src                    <span class="c"># (N, 300) localized shape delta (delta_beta)</span>
+
+<span class="c"># 2) Direct indexing: rows are ordered edit -> scale -> subject -> prompt variant</span>
+E, S, J, V = meta[<span class="s">"num_edits"</span>], len(meta[<span class="s">"scales"</span>]), meta[<span class="s">"num_subjects"</span>], meta[<span class="s">"num_prompt_variants"</span>]
+def row(edit, scale, subject_idx, variant):
+    e, s = meta[<span class="s">"edit_names"</span>].index(edit), meta[<span class="s">"scales"</span>].index(scale)
+    return ((e * S + s) * J + subject_idx) * V + variant
+
+i = row(<span class="s">"hawk"</span>, 1.5, subject_idx=0, variant=0)
+print(data[<span class="s">"edit_names"</span>][i], data[<span class="s">"scales"</span>][i], data[<span class="s">"source_subjects"</span>][i])
+print(data[<span class="s">"edit_prompts"</span>][i])
+<span class="c"># hawk 1.5 130925160744</span>
+<span class="c"># make the nose much more hawk-like</span>
+
+<span class="c"># 3) All six regions as a single PyTorch dataset of (prompt, beta_0, beta_1, region) samples</span>
+class ShapeEditTriplets(Dataset):
+    def __init__(self, path):
+        d = torch.load(path, map_location=<span class="s">"cpu"</span>, weights_only=True)
+        self.src, self.tgt, self.prompts = d[<span class="s">"source_shapes"</span>], d[<span class="s">"target_shapes"</span>], d[<span class="s">"edit_prompts"</span>]
+        self.region = REGIONS.index(d[<span class="s">"metadata"</span>][<span class="s">"attribute_name"</span>])
+
+    def __len__(self):
+        return len(self.prompts)
+
+    def __getitem__(self, i):
+        return {<span class="s">"prompt"</span>: self.prompts[i], <span class="s">"source"</span>: self.src[i],
+                <span class="s">"target"</span>: self.tgt[i], <span class="s">"region"</span>: self.region}
+
+full = ConcatDataset([ShapeEditTriplets(f<span class="s">"{ROOT}/{r}/{r}_edit_data.pth"</span>) for r in REGIONS])
+print(len(full))  <span class="c"># 580500</span></pre>
+      </div>
+
+      <details class="disclosure reveal">
+        <summary><span>Edit prototypes (<code>edit_names</code>) by region · hover a key for its prompt phrase</span></summary>
+        <div class="disclosure-body">
+          <div class="region-grid">
+            <div class="region-card"><h4>face <span>face_edit_data.pth</span></h4><div class="chips"><span class="chip" title="big">big</span><span class="chip" title="small">small</span><span class="chip" title="wide">wide</span><span class="chip" title="narrow">narrow</span><span class="chip" title="long">long</span><span class="chip" title="short">short</span><span class="chip" title="big forehead">forehead_big</span><span class="chip" title="small forehead">forehead_small</span><span class="chip" title="with chubby cheeks">chubby_cheeks</span><span class="chip" title="with lean cheeks">lean_cheeks</span><span class="chip" title="with pronounced cheekbones">pronounced_cheekbones</span><span class="chip" title="with a prominent chin">chin_prominent</span><span class="chip" title="with a recessed chin">chin_recessed</span><span class="chip" title="with a long chin">chin_long</span><span class="chip" title="with a short chin">chin_short</span><span class="chip" title="with a wide chin">chin_wide</span><span class="chip" title="with a narrow chin">chin_narrow</span><span class="chip" title="with a cleft chin">chin_cleft</span><span class="chip" title="with a pointed chin">chin_pointed</span><span class="chip" title="with a wide jaw">jaw_wide</span><span class="chip" title="with a narrow jaw">jaw_narrow</span><span class="chip" title="with a squared jaw">jaw_squared</span><span class="chip" title="with a rounded jaw">jaw_rounded</span><span class="chip" title="with the jaw deviated to the left">jaw_deviated_left</span><span class="chip" title="with the jaw deviated to the right">jaw_deviated_right</span></div></div>
+            <div class="region-card"><h4>nose <span>nose_edit_data.pth</span></h4><div class="chips"><span class="chip" title="small">small</span><span class="chip" title="big">big</span><span class="chip" title="narrow">narrow</span><span class="chip" title="wide">wide</span><span class="chip" title="short">short</span><span class="chip" title="long">long</span><span class="chip" title="narrow at the radix">radix_narrow</span><span class="chip" title="wide at the radix">radix_wide</span><span class="chip" title="protruding at the radix">radix_out</span><span class="chip" title="recessed at the radix">radix_in</span><span class="chip" title="narrow at the bridge">bridge_narrow</span><span class="chip" title="thick at the bridge">bridge_thick</span><span class="chip" title="protruding at the bridge">bridge_out</span><span class="chip" title="recessed at the bridge">bridge_in</span><span class="chip" title="deviated left at the bridge">bridge_left</span><span class="chip" title="deviated right at the bridge">bridge_right</span><span class="chip" title="with a downturned tip">tip_down</span><span class="chip" title="with an upturned tip">tip_up</span><span class="chip" title="with a recessed tip">tip_in</span><span class="chip" title="with a protruding tip">tip_out</span><span class="chip" title="small at the base">base_small</span><span class="chip" title="big at the base">base_big</span><span class="chip" title="narrow at the base">base_narrow</span><span class="chip" title="wide at the base">base_wide</span><span class="chip" title="deviated left at the base">base_left</span><span class="chip" title="deviated right at the base">base_right</span><span class="chip" title="with downturned nostrils">nostril_down</span><span class="chip" title="with upturned nostrils">nostril_up</span><span class="chip" title="with flared nostrils">nostril_out</span><span class="chip" title="with narrow nostrils">nostril_in</span><span class="chip" title="aquiline">aquiline</span><span class="chip" title="hawk-like">hawk</span><span class="chip" title="Greek">greek</span><span class="chip" title="flat">flat</span><span class="chip" title="saddle-shaped">saddle</span><span class="chip" title="wavy in profile">wavy_profile</span><span class="chip" title="linearly deviated to the left">deviated_linear_left</span><span class="chip" title="linearly deviated to the right">deviated_linear_right</span><span class="chip" title="C-shaped crooked to the left">crooked_c_left</span><span class="chip" title="C-shaped crooked to the right">crooked_c_right</span><span class="chip" title="S-shaped crooked to the left">crooked_s_left</span><span class="chip" title="S-shaped crooked to the right">crooked_s_right</span></div></div>
+            <div class="region-card"><h4>lips <span>lips_edit_data.pth</span></h4><div class="chips"><span class="chip" title="small">small</span><span class="chip" title="big">big</span><span class="chip" title="wide">wide</span><span class="chip" title="narrow">narrow</span><span class="chip" title="with a thin upper lip">thin_upper</span><span class="chip" title="with a thick upper lip">thick_upper</span><span class="chip" title="with a thin lower lip">thin_lower</span><span class="chip" title="with a thick lower lip">thick_lower</span><span class="chip" title="with thin lips">thin_both</span><span class="chip" title="with thick lips">thick_both</span><span class="chip" title="protruding">protruding</span><span class="chip" title="recessed">recessed</span><span class="chip" title="with a protruding lower lip">protruded_lower</span><span class="chip" title="with a protruding upper lip">protruded_upper</span><span class="chip" title="with a recessed lower lip">recessed_lower</span><span class="chip" title="with a recessed upper lip">recessed_upper</span><span class="chip" title="with upturned corners">corners_up</span><span class="chip" title="with downturned corners">corners_down</span><span class="chip" title="with the left corner raised">left_corner_up</span><span class="chip" title="with the right corner raised">right_corner_up</span><span class="chip" title="with the left corner lowered">left_corner_down</span><span class="chip" title="with the right corner lowered">right_corner_down</span><span class="chip" title="horizontally left assymetric">assymetric_horizontal_left</span><span class="chip" title="horizontally right assymetric">assymetric_horizontal_right</span><span class="chip" title="vertically left assymetric">assymetric_vertical_left</span><span class="chip" title="vertically right assymetric">assymetric_vertical_right</span></div></div>
+            <div class="region-card"><h4>ears <span>ears_edit_data.pth</span></h4><div class="chips"><span class="chip" title="small">small</span><span class="chip" title="big">big</span><span class="chip" title="short">short</span><span class="chip" title="long">long</span><span class="chip" title="narrow">narrow</span><span class="chip" title="wide">wide</span><span class="chip" title="attached lobe">lobe_attached</span><span class="chip" title="detached lobe">lobe_detached</span><span class="chip" title="protruding">protruding</span><span class="chip" title="flat">flat</span><span class="chip" title="pointed top">pointed_top</span><span class="chip" title="rounded top">rounded_top</span><span class="chip" title="left protruding">left_protruding</span><span class="chip" title="right protruding">right_protruding</span></div></div>
+            <div class="region-card"><h4>neck <span>neck_edit_data.pth</span></h4><div class="chips"><span class="chip" title="thick">thick</span><span class="chip" title="thin">thin</span><span class="chip" title="long">long</span><span class="chip" title="short">short</span><span class="chip" title="with double chin">double_chin</span><span class="chip" title="with prominent adam&#x27;s apple">adams_apple_prominent</span></div></div>
+            <div class="region-card"><h4>eyes <span>eyes_edit_data.pth</span></h4><div class="chips"><span class="chip" title="small">small</span><span class="chip" title="big">big</span><span class="chip" title="wide">wide</span><span class="chip" title="narrow">narrow</span><span class="chip" title="vertically tall">tall</span><span class="chip" title="almond-shaped">almond</span><span class="chip" title="deep-set">deep_set</span><span class="chip" title="prominent">prominent</span><span class="chip" title="close-set">close_set</span><span class="chip" title="wide-set">wide_set</span><span class="chip" title="upturned">upturned</span><span class="chip" title="downturned">downturned</span><span class="chip" title="with a raised brow ridge">brow_raised</span><span class="chip" title="with a low brow ridge">brow_low</span><span class="chip" title="with a prominent brow ridge">brow_prominent</span></div></div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CODE ============================== -->
+<section class="section alt" id="code">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">04 — Code</p>
+      <h2>Code release.</h2>
+    </div>
+    <div class="code-grid">
+      <div class="soon-card reveal">
+        <span class="soon-pill"><span class="pulse"></span>Coming soon</span>
+        <p>The full code for ManifoldSplat <strong>will be available soon</strong>. We are currently cleaning up the repository and preparing the release.</p>
+        <p><strong>If you need the code sooner</strong> (for instance, to run comparisons for an upcoming submission), please feel free to <a href="https://github.com/a-canela/manifoldsplat/issues/new" target="_blank" rel="noopener"><strong>open an Issue</strong></a>. Knowing there is active demand will help us prioritize and expedite the release process!</p>
+        <div class="link-buttons" style="justify-content:flex-start;margin-top:22px">
+          <a class="btn" href="https://github.com/a-canela/manifoldsplat/issues/new" target="_blank" rel="noopener">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></span><span>Open an Issue</span>
+          </a>
+          <a class="btn" href="https://github.com/a-canela/manifoldsplat" target="_blank" rel="noopener" style="background:#fff;color:var(--ink);border-color:var(--line-strong)">
+            <span class="icon"><svg viewBox="0 0 496 512" aria-hidden="true"><path fill="currentColor" d="M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg></span><span>Watch the repository</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <h3 style="font-size:1.25rem">Meanwhile: DeltaRegion is already available</h3>
+        <p style="margin-top:0">The shape-editing model can be used today from <a href="https://huggingface.co/a-canela/DeltaRegion" target="_blank" rel="noopener">🤗 Hugging Face</a> to edit any FLAME 2020 identity from a text prompt.</p>
+        <div class="code-block">
+          <div class="code-title"><span>deltaregion.py</span><button type="button" class="copy-btn" data-copy="#code-deltaregion">Copy</button></div>
+<pre id="code-deltaregion"><span class="c"># pip install torch transformers safetensors sentencepiece</span>
+import torch
+from transformers import AutoModel
+
+model = AutoModel.from_pretrained(<span class="s">"a-canela/DeltaRegion"</span>, trust_remote_code=True).eval()
+
+<span class="c"># Edit the neutral (mean) FLAME identity</span>
+out = model.edit(<span class="s">"make the nose long"</span>)
+edited_betas = out.pred_shape                  <span class="c"># (1, 300) FLAME 2020 shape coefficients</span>
+print(model.region_probabilities(out.gate))    <span class="c"># [{'face': ..., 'nose': 0.99, ...}]</span>
+
+<span class="c"># Edit your own identity (e.g. FLAME shape from MICA / a face tracker)</span>
+source_betas = torch.zeros(300)                <span class="c"># replace with your subject's 300 coefficients</span>
+out = model.edit([<span class="s">"make the lips thick"</span>, <span class="s">"make the ears very protruding"</span>],
+                 source_shape=source_betas)
+
+<span class="c"># Control the edit strength continuously</span>
+weaker = model.edit(<span class="s">"make the nose long"</span>, prior_scale=0.6)
+stronger = model.edit(<span class="s">"make the nose long"</span>, prior_scale=1.8)</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== ACKNOWLEDGMENTS ============================== -->
+<section class="section" id="acknowledgments">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">05 — Acknowledgments</p>
+      <h2>Acknowledgments.</h2>
+    </div>
+    <div class="ack reveal">
+      <p>This work has been partially supported by project PID2023-151184OB-I00, funded by the Ministerio de Ciencia e Innovación (MCIN) / Agencia Estatal de Investigación (AEI) / 10.13039/501100011033, by the European Social Fund (ESF) “Investing in your future” and by <em>ERDF, EU</em>; and by the industrial doctorate 2021 DI 00102 funded by the Government of Catalonia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CITATION ============================== -->
+<section class="section alt" id="citation">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">06 — Cite</p>
+      <h2>Citation.</h2>
+      <p class="lead">If you find ManifoldSplat, DeltaRegion or the dataset useful in your research, please consider citing:</p>
+    </div>
+    <div class="code-block reveal" style="max-width:1100px">
+      <div class="code-title"><span>BibTeX</span><button type="button" class="copy-btn" data-copy="#bibtex">Copy</button></div>
+<pre id="bibtex"><span class="k">@inproceedings</span>{canela2026manifoldsplat,
+  title={ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars},
+  author={Canela, Antonio and Sanchez-Riera, Jordi},
+  booktitle={DAGM German Conference on Pattern Recognition (GCPR)},
+  year={2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Manifold<span class="grad-text">Splat</span></div>
+        <p>Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars.</p>
+      </div>
+      <div>
+        <h4>Thanks</h4>
+        <p>The synchronized before/after video comparison is adapted from the project page of <a href="https://gr3en-relight.github.io/" target="_blank" rel="noopener">GR3EN</a>. The header with affiliation logos, the section navigation and the quantitative charts are inspired by the project pages of <a href="https://aolivtous.github.io/publications/mumins.html" target="_blank" rel="noopener">MUMINS</a>, <a href="https://vision-banana.github.io/" target="_blank" rel="noopener">Vision Banana</a> and <a href="https://hanyuc.com/trainspotting/" target="_blank" rel="noopener">Trainspotting</a>.</p>
+        <p>Icons from <a href="https://jpswalsh.github.io/academicons/" target="_blank" rel="noopener">Academicons</a> and <a href="https://fontawesome.com/" target="_blank" rel="noopener">Font Awesome</a>.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Copyright © 2026</span>
+      <span><a href="https://github.com/a-canela/manifoldsplat" target="_blank" rel="noopener">github.com/a-canela/manifoldsplat</a></span>
+    </div>
+  </div>
+</footer>
+
+<button type="button" class="to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="static/js/main.js" defer></script>
 </body>
 </html>
