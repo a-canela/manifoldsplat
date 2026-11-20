@@ -2,7 +2,7 @@
 
 Official repository for the paper **ManifoldSplat: Language-Guided Semantic Shape Editing of 3D Gaussian Head Avatars** (GCPR 2026).
 
-[Antonio Canela](https://scholar.google.com/citations?user=DHp7nTUAAAAJ)¹², [Jordi Sànchez-Riera](https://scholar.google.com/citations?user=v76tB7sAAAAJ)²
+[Antonio Canela](https://orcid.org/0009-0002-1943-5170)¹², [Jordi Sànchez-Riera](https://orcid.org/0000-0002-4803-5742)²
 
 ¹Universitat Politècnica de Catalunya\
 ²Institut de Robòtica i Informàtica Industrial, CSIC-UPC
