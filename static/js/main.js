@@ -210,13 +210,14 @@
       if (state.started && videoA.duration) {
         if (progress) progress.style.width = (100 * videoA.currentTime / videoA.duration).toFixed(2) + "%";
         if (!videoA.paused && !videoB.paused && videoB.readyState >= 2) {
-          const drift = videoB.currentTime - videoA.currentTime;
-          const wrapped = Math.abs(drift) > videoA.duration / 2;
-          if (!wrapped) {
-            if (Math.abs(drift) > 0.25) { videoB.currentTime = videoA.currentTime; videoB.playbackRate = 1; }
-            else if (Math.abs(drift) > 0.03) videoB.playbackRate = drift > 0 ? 0.9 : 1.1;
-            else videoB.playbackRate = 1;
-          }
+          // Circular drift: both videos loop, so measure the shortest offset around the loop
+          // (a large raw offset is not ignored as a "wrap", which broke short clips).
+          const dur = videoA.duration;
+          const raw = videoB.currentTime - videoA.currentTime;
+          const drift = ((raw % dur) + dur * 1.5) % dur - dur / 2;
+          if (Math.abs(drift) > 0.25) { videoB.currentTime = videoA.currentTime; videoB.playbackRate = 1; }
+          else if (Math.abs(drift) > 0.03) videoB.playbackRate = drift > 0 ? 0.9 : 1.1;
+          else videoB.playbackRate = 1;
         }
       }
       requestAnimationFrame(syncLoop);
