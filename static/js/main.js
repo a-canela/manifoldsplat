@@ -57,6 +57,19 @@
 
   if (toTop) toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" }));
 
+  /* ---------- Conference note: hover/focus via CSS; tap toggle for touch screens ---------- */
+  const confLine = $(".conf-line");
+  if (confLine) {
+    confLine.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      confLine.classList.toggle("open");
+    });
+    document.addEventListener("click", (e) => { if (!confLine.contains(e.target)) confLine.classList.remove("open"); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { confLine.classList.remove("open"); confLine.blur(); }
+    });
+  }
+
   /* ---------- Reveal on scroll ---------- */
   const revealEls = $$(".reveal");
   if ("IntersectionObserver" in window && !reducedMotion) {
